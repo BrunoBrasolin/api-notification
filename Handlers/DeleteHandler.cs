@@ -29,7 +29,7 @@ public class DeleteHandler : IRequestHandler<DeleteRequest, bool>
 
         NotificationModel notification = _mediator.Send(getNotification, cts).Result;
 
-        if (notification.Id != request.Id)
+        if (notification == null)
             return Task.FromResult(true);
         else
             return Task.FromResult(false);

@@ -14,18 +14,22 @@ public class NotificationController : Controller
 
     public NotificationController(IMediator mediator) => _mediator = mediator;
 
-    [HttpGet("ListNotifications")]
-    public async Task<List<NotificationModel>> ListNotifications([FromQuery] ListRequest request) => await _mediator.Send(request);
+    [HttpGet("List")]
+    public async Task<List<NotificationModel>> List([FromQuery] ListRequest request) => await _mediator.Send(request);
 
-    [HttpGet("GetNotification")]
-    public async Task<NotificationModel> GetNotification([FromQuery] GetRequest request) => await _mediator.Send(request);
+    [HttpGet("Get")]
+    public async Task<NotificationModel> Get([FromQuery] GetRequest request) => await _mediator.Send(request);
 
-    [HttpPost("CreateNotification")]
-    public async Task<bool> CreateNotification([FromBody] CreateRequest request) => await _mediator.Send(request);
+    [HttpPost("Create")]
+    public async Task<bool> Create([FromBody] CreateRequest request) => await _mediator.Send(request);
 
-    [HttpPut("UpdateNotification")]
-    public async Task<bool> UpdateNotification([FromBody] UpdateRequest request) => await _mediator.Send(request);
+    [HttpPut("Update")]
+    public async Task<bool> Update([FromBody] UpdateRequest request) => await _mediator.Send(request);
 
-    [HttpDelete("DeleteNotification")]
-    public async Task<bool> DeleteNotification([FromBody] DeleteRequest request) => await _mediator.Send(request);
+    [HttpDelete("Delete")]
+    public async Task<bool> Delete([FromBody] DeleteRequest request) => await _mediator.Send(request);
+
+    [HttpGet("Dismiss")]
+    public async Task<bool> Dismiss([FromQuery] DismissRequest request) => await _mediator.Send(request);
+
 }
