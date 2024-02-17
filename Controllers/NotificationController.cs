@@ -1,20 +1,17 @@
 ﻿using api_notification.Models;
 using api_notification.Requests;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api_notification.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class NotificationController : Controller
+public class NotificationController(IMediator mediator) : Controller
 {
-    private readonly IMediator _mediator;
+    private readonly IMediator _mediator = mediator;
 
-    public NotificationController(IMediator mediator) => _mediator = mediator;
-
-    [HttpGet("List")]
+	[HttpGet("List")]
     public async Task<List<NotificationModel>> List([FromQuery] ListRequest request) => await _mediator.Send(request);
 
     [HttpGet("Get")]
