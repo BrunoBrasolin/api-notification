@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Gamidas.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Configuration.SetBasePath("/app/config");
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 builder.Services.AddControllers();
@@ -16,14 +15,9 @@ builder.Services.AddCors();
 builder.Services.ConfigureGamidas();
 
 var app = builder.Build();
-
 app.UseSwagger();
 app.UseSwaggerUI();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
-app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-
+app.UseCors(builder => builder.WithOrigins("*.gamidas.dev.br").AllowAnyHeader().AllowAnyMethod());
 app.Run();
