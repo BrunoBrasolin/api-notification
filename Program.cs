@@ -19,5 +19,5 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthorization();
 app.MapControllers();
-app.UseCors(builder => builder.WithOrigins("*.gamidas.dev.br").AllowAnyHeader().AllowAnyMethod());
+app.UseCors(builder => builder.WithOrigins("http://notification-create.gamidas.dev.br").AllowAnyHeader().AllowAnyMethod());
 app.Run();
