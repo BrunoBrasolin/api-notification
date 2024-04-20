@@ -12,11 +12,11 @@ COPY ["api-notification.csproj", "."]
 RUN dotnet restore "./././api-notification.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "./api-notification.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./api-notification.csproj" -c "$BUILD_CONFIGURATION" -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./api-notification.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./api-notification.csproj" -c "$BUILD_CONFIGURATION" -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
