@@ -13,14 +13,14 @@ public class DismissHandler : IRequestHandler<DismissRequest, bool>
         _mediator = mediator;
     }
 
-    public Task<bool> Handle(DismissRequest request, CancellationToken cts)
+    public Task<bool> Handle(DismissRequest request, CancellationToken cancellationToken)
     {
         ValidationRequest validationRequest = new()
         {
             APIKey = request.APIKey
         };
 
-        bool validated = _mediator.Send(validationRequest, cts).Result;
+        bool validated = _mediator.Send(validationRequest, cancellationToken).Result;
 
         if (!validated)
             throw new InvalidAPIKeyException();
@@ -30,7 +30,7 @@ public class DismissHandler : IRequestHandler<DismissRequest, bool>
             Id = request.Id
         };
 
-        bool deleted = _mediator.Send(getNotification, cts).Result;
+        bool deleted = _mediator.Send(getNotification, cancellationToken).Result;
 
         return Task.FromResult(deleted);
     }

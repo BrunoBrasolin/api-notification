@@ -15,7 +15,7 @@ public class UpdateHandler : IRequestHandler<UpdateRequest, bool>
         _mediator = mediator;
         _context = context;
     }
-    public Task<bool> Handle(UpdateRequest request, CancellationToken cts)
+    public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
     {
         NotificationModel updatedNotification = _context.Notifications.Update(request.Notification).Entity;
         _context.SaveChanges();
@@ -25,7 +25,7 @@ public class UpdateHandler : IRequestHandler<UpdateRequest, bool>
             Id = updatedNotification.Id
         };
 
-        NotificationModel notification = _mediator.Send(getNotification, cts).Result;
+        NotificationModel notification = _mediator.Send(getNotification, cancellationToken).Result;
 
         if (notification == request.Notification)
             return Task.FromResult(true);

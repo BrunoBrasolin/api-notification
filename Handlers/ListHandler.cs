@@ -14,7 +14,7 @@ public class ListHandler : IRequestHandler<ListRequest, List<NotificationModel>>
         _context = context;
     }
 
-    public Task<List<NotificationModel>> Handle(ListRequest request, CancellationToken cts)
+    public Task<List<NotificationModel>> Handle(ListRequest request, CancellationToken cancellationToken)
     {
         var allItems = _context.Notifications.ToList();
 

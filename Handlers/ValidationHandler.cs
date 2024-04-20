@@ -17,7 +17,7 @@ public class ValidationHandler : IRequestHandler<ValidationRequest, bool>
         _encryption = encryption;
     }
 
-    public Task<bool> Handle(ValidationRequest request, CancellationToken cts)
+    public Task<bool> Handle(ValidationRequest request, CancellationToken cancellationToken)
     {
         string apiKey = _configuration.GetValue<string>("APIKey");
 

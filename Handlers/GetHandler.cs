@@ -14,7 +14,7 @@ public class GetHandler : IRequestHandler<GetRequest, NotificationModel>
         _context = context;
     }
 
-    public Task<NotificationModel> Handle(GetRequest request, CancellationToken cts)
+    public Task<NotificationModel> Handle(GetRequest request, CancellationToken cancellationToken)
     {
         NotificationModel notification = _context.Notifications.Where(n => n.Id == request.Id).FirstOrDefault();
 

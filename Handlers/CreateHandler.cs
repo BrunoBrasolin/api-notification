@@ -16,7 +16,7 @@ public class CreateHandler : IRequestHandler<CreateRequest, bool>
         _context = context;
     }
 
-    public Task<bool> Handle(CreateRequest request, CancellationToken cts)
+    public Task<bool> Handle(CreateRequest request, CancellationToken cancellationToken)
     {
         _context.Notifications.Add(request.Notification);
         _context.SaveChanges();
@@ -26,7 +26,7 @@ public class CreateHandler : IRequestHandler<CreateRequest, bool>
             Id = request.Notification.Id
         };
 
-        NotificationModel notification = _mediator.Send(getNotification, cts).Result;
+        NotificationModel notification = _mediator.Send(getNotification, cancellationToken).Result;
 
         if (notification == request.Notification)
             return Task.FromResult(true);

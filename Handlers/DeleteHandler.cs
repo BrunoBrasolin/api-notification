@@ -17,7 +17,7 @@ public class DeleteHandler : IRequestHandler<DeleteRequest, bool>
         _context = context;
     }
 
-    public Task<bool> Handle(DeleteRequest request, CancellationToken cts)
+    public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
     {
         _context.Notifications.Where(n => n.Id == request.Id).ExecuteDelete();
         _context.SaveChanges();
@@ -27,7 +27,7 @@ public class DeleteHandler : IRequestHandler<DeleteRequest, bool>
             Id = request.Id
         };
 
-        NotificationModel notification = _mediator.Send(getNotification, cts).Result;
+        NotificationModel notification = _mediator.Send(getNotification, cancellationToken).Result;
 
         if (notification == null)
             return Task.FromResult(true);
