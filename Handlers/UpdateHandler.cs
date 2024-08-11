@@ -5,31 +5,35 @@ using MediatR;
 
 namespace api_notification.Handlers;
 
-public class UpdateHandler : IRequestHandler<UpdateRequest, bool>
+public class UpdateHandler(IMediator mediator, MainDatabaseContext context, ILogger<UpdateHandler> logger) : IRequestHandler<UpdateRequest, bool>
 {
-    private readonly IMediator _mediator;
-    private readonly MainDatabaseContext _context;
+	private readonly IMediator _mediator = mediator;
+	private readonly MainDatabaseContext _context = context;
+	private readonly ILogger<UpdateHandler> _logger = logger;
 
-    public UpdateHandler(IMediator mediator, MainDatabaseContext context)
-    {
-        _mediator = mediator;
-        _context = context;
-    }
-    public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
-    {
-        NotificationModel updatedNotification = _context.Notifications.Update(request.Notification).Entity;
-        _context.SaveChanges();
+	public Task<bool> Handle(UpdateRequest request, CancellationToken cancellationToken)
+	{
+		_logger.LogInformation("UpdateHandler called");
 
-        GetRequest getNotification = new()
-        {
-            Id = updatedNotification.Id
-        };
+		NotificationModel updatedNotification = _context.Notifications.Update(request.Notification).Entity;
+		_context.SaveChanges();
 
-        NotificationModel notification = _mediator.Send(getNotification, cancellationToken).Result;
+		GetRequest getNotification = new()
+		{
+			Id = updatedNotification.Id
+		};
 
-        if (notification == request.Notification)
-            return Task.FromResult(true);
-        else
-            return Task.FromResult(false);
-    }
+		NotificationModel notification = _mediator.Send(getNotification, cancellationToken).Result;
+
+		if (notification == request.Notification)
+		{
+			_logger.LogInformation("UpdateHandler success");
+			return Task.FromResult(true);
+		}
+		else
+		{
+			_logger.LogError("UpdateHandler error");
+			return Task.FromResult(false);
+		}
+	}
 }

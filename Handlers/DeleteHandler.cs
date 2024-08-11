@@ -6,32 +6,35 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api_notification.Handlers;
 
-public class DeleteHandler : IRequestHandler<DeleteRequest, bool>
+public class DeleteHandler(IMediator mediator, MainDatabaseContext context, ILogger<DeleteHandler> logger) : IRequestHandler<DeleteRequest, bool>
 {
-    private readonly IMediator _mediator;
-    private readonly MainDatabaseContext _context;
+	private readonly IMediator _mediator = mediator;
+	private readonly MainDatabaseContext _context = context;
+	private readonly ILogger<DeleteHandler> _logger = logger;
 
-    public DeleteHandler(IMediator mediator, MainDatabaseContext context)
-    {
-        _mediator = mediator;
-        _context = context;
-    }
+	public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
+	{
+		_logger.LogInformation("DeleteHandler called");
 
-    public Task<bool> Handle(DeleteRequest request, CancellationToken cancellationToken)
-    {
-        _context.Notifications.Where(n => n.Id == request.Id).ExecuteDelete();
-        _context.SaveChanges();
+		_context.Notifications.Where(n => n.Id == request.Id).ExecuteDelete();
+		_context.SaveChanges();
 
-        GetRequest getNotification = new()
-        {
-            Id = request.Id
-        };
+		GetRequest getNotification = new()
+		{
+			Id = request.Id
+		};
 
-        NotificationModel notification = _mediator.Send(getNotification, cancellationToken).Result;
+		NotificationModel notification = _mediator.Send(getNotification, cancellationToken).Result;
 
-        if (notification == null)
-            return Task.FromResult(true);
-        else
-            return Task.FromResult(false);
-    }
+		if (notification == null)
+		{
+			_logger.LogInformation("DeleteHandler success");
+			return Task.FromResult(true);
+		}
+		else
+		{
+			_logger.LogError("DeleteHandler error");
+			return Task.FromResult(false);
+		}
+	}
 }

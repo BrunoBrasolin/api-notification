@@ -5,19 +5,17 @@ using MediatR;
 
 namespace api_notification.Handlers;
 
-public class GetHandler : IRequestHandler<GetRequest, NotificationModel>
+public class GetHandler(MainDatabaseContext context, ILogger<GetHandler> logger) : IRequestHandler<GetRequest, NotificationModel>
 {
-    private readonly MainDatabaseContext _context;
+	private readonly MainDatabaseContext _context = context;
+	private readonly ILogger<GetHandler> _logger = logger;
 
-    public GetHandler(MainDatabaseContext context)
-    {
-        _context = context;
-    }
+	public Task<NotificationModel> Handle(GetRequest request, CancellationToken cancellationToken)
+	{
+		_logger.LogInformation("GetHandler called");
 
-    public Task<NotificationModel> Handle(GetRequest request, CancellationToken cancellationToken)
-    {
-        NotificationModel notification = _context.Notifications.Where(n => n.Id == request.Id).FirstOrDefault();
+		NotificationModel notification = _context.Notifications.Where(n => n.Id == request.Id).FirstOrDefault();
 
-        return Task.FromResult(notification);
-    }
+		return Task.FromResult(notification);
+	}
 }

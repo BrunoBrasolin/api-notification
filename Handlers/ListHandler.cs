@@ -5,19 +5,17 @@ using MediatR;
 
 namespace api_notification.Handlers;
 
-public class ListHandler : IRequestHandler<ListRequest, List<NotificationModel>>
+public class ListHandler(MainDatabaseContext context, ILogger<ListHandler> logger) : IRequestHandler<ListRequest, List<NotificationModel>>
 {
-    private readonly MainDatabaseContext _context;
+	private readonly MainDatabaseContext _context = context;
+	private readonly ILogger<ListHandler> _logger = logger;
 
-    public ListHandler(MainDatabaseContext context)
-    {
-        _context = context;
-    }
+	public Task<List<NotificationModel>> Handle(ListRequest request, CancellationToken cancellationToken)
+	{
+		_logger.LogInformation("ListHandler called");
 
-    public Task<List<NotificationModel>> Handle(ListRequest request, CancellationToken cancellationToken)
-    {
-        var allItems = _context.Notifications.ToList();
+		var allItems = _context.Notifications.ToList();
 
-        return Task.FromResult(allItems);
-    }
+		return Task.FromResult(allItems);
+	}
 }

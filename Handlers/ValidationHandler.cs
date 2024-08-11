@@ -6,18 +6,12 @@ using MediatR;
 
 namespace api_notification.Handlers;
 
-public class ValidationHandler : IRequestHandler<ValidationRequest, bool>
+public class ValidationHandler(IConfiguration configuration, IEncryption encryption) : IRequestHandler<ValidationRequest, bool>
 {
-    private readonly IConfiguration _configuration;
-    private readonly IEncryption _encryption;
+    private readonly IConfiguration _configuration = configuration;
+    private readonly IEncryption _encryption = encryption;
 
-    public ValidationHandler(IConfiguration configuration, IEncryption encryption)
-    {
-        _configuration = configuration;
-        _encryption = encryption;
-    }
-
-    public Task<bool> Handle(ValidationRequest request, CancellationToken cancellationToken)
+	public Task<bool> Handle(ValidationRequest request, CancellationToken cancellationToken)
     {
         string apiKey = _configuration.GetValue<string>("APIKey");
 
