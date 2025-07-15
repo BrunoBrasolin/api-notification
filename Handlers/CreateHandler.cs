@@ -19,7 +19,7 @@ public class CreateHandler(IMediator mediator, MainDatabaseContext context, ILog
 
 		GetRequest getNotification = new()
 		{
-			Id = request.Notification.Id
+			Id = request.Notification.Id.Value
 		};
 
 		NotificationModel notification = _mediator.Send(getNotification, cancellationToken).Result;
