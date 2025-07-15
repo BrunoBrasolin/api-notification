@@ -6,7 +6,7 @@ namespace api_notification.Models;
 public partial class NotificationModel
 {
     [Column("ID")]
-    public int Id { get; set; }
+    public int? Id { get; set; }
     [Column("RECIPIENT")]
     public string Recipient { get; set; }
     [Column("SUBJECT")]
