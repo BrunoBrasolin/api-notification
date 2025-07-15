@@ -36,11 +36,13 @@ var app = builder.Build();
 app.UseSwagger(c =>
 {
 	if (builder.Environment.EnvironmentName == "Production")
-		c.RouteTemplate = "notification/swagger/{documentName}/swagger.json";
+		c.RouteTemplate = "notification/swagger/swagger.json";
 });
 app.UseSwaggerUI(c =>
 {
-	c.RoutePrefix = "notification";
+	c.SwaggerEndpoint("/notification/swagger/swagger.json", "API Notification");
+	if (builder.Environment.EnvironmentName == "Production")
+		c.RoutePrefix = "notification";
 });
 app.UseAuthorization();
 app.MapControllers();
