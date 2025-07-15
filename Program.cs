@@ -33,18 +33,12 @@ Log.Logger = new LoggerConfiguration()
 	.CreateLogger();
 
 var app = builder.Build();
-app.UseSwagger(c =>
-{
-	if (builder.Environment.EnvironmentName == "Production")
-		c.RouteTemplate = "notification/swagger/swagger.json";
-});
+app.UseSwagger(c => { c.RouteTemplate = "notification/{documentName}/swagger.json"; });
 app.UseSwaggerUI(c =>
 {
-	c.SwaggerEndpoint("/notification/swagger/swagger.json", "API Notification");
-	if (builder.Environment.EnvironmentName == "Production")
-		c.RoutePrefix = "notification";
-});
-app.UseAuthorization();
+	c.SwaggerEndpoint("/notification/v1/swagger.json", "API Notification V1");
+	c.RoutePrefix = "notification";
+}); app.UseAuthorization();
 app.MapControllers();
 
 app.MapHealthChecks("/healthcheck", new HealthCheckOptions
