@@ -33,8 +33,15 @@ Log.Logger = new LoggerConfiguration()
 	.CreateLogger();
 
 var app = builder.Build();
-app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwagger(c =>
+{
+	if (builder.Environment.EnvironmentName == "Production")
+		c.RouteTemplate = "notification/swagger/{documentName}/swagger.json";
+});
+app.UseSwaggerUI(c =>
+{
+	c.RoutePrefix = "notification";
+});
 app.UseAuthorization();
 app.MapControllers();
 
